@@ -8,14 +8,14 @@ import { createPinia } from 'pinia';
 import { VueQueryPlugin } from 'vue-query';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
-const pinia = createPinia();
 const app = createApp(App);
-
-app.use(VueQueryPlugin);
-app.use(pinia);
-pinia.use(piniaPluginPersistedstate)
 app.use(ElementPlus);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
+
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia);
+app.use(VueQueryPlugin);
 app.mount('#app');

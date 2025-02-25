@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ElAlert: typeof import('element-plus/es')['ElAlert']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElFooter: typeof import('element-plus/es')['ElFooter']
     ElHeader: typeof import('element-plus/es')['ElHeader']
@@ -19,7 +20,7 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    HelloWorld: typeof import('@/src/components/HelloWorld.vue')['default']
     History: typeof import('./src/components/History.vue')['default']
     HistoryList: typeof import('./src/components/HistoryList.vue')['default']
     HitStatistics: typeof import('./src/components/HitStatistics.vue')['default']

@@ -1,96 +1,39 @@
 <script setup lang="ts">
-import { useSelectStore } from '../store/selectStore';
-import { useSelectStore1 } from '../store/selectStore1';
-import { padZero } from '../uility/prize_base_info';
+import { useSelectStore } from '@/store/selectStore';
+import { padZero } from '@/utility/prize_base_info';
 import { onMounted, watch } from 'vue';
-const getColorArr = (data: string) => {
-  const colorMap = {
+interface ColorMap {
+  [key: string]: string; // 索引簽名，允許動態鍵
+}
+
+// 函數加上輸入和返回型別
+const getColorArr = (data: string): string => {
+  // 定義顏色映射物件，並指定型別
+  const colorMap: ColorMap = {
     红: 'red',
     绿: 'green',
     蓝: 'blue'
   };
+
+  // 從映射中獲取結果
   const result = colorMap[data];
+
+  // 如果結果不存在，打印警告
   if (!result) {
     console.warn(`顏色未定義: ${data}`);
   }
+
+  // 返回結果，若無則返回空字串
   return result || '';
 };
 const selectStore = useSelectStore();
-const selectStore1 = useSelectStore1();
 onMounted(() => {
   selectStore.getHistoryAPIData();
 });
 </script>
 <template>
   <div class="pt-1">
-    <!-- <div class="flex border-b-1 border-b-indigo-500">
-      <div class="openInfo leading-[20px] w-1/5 text-center">
-        <div class="text-zinc-400 text-[14px]">2025-02-20</div>
-        <div class="font-semibold text-[16px] leading-8">051期</div>
-      </div>
-      <div class="itemLottery w-4/5 whitespace-nowrap">
-        <div class="flex">
-          <div class="itemLotteryBoxItem">
-            <div class="itemLotteryBoxItemBox">
-              <div class="numberBox green">27</div>
-
-              <div class="xiaoBox">兔/土</div>
-            </div>
-          </div>
-
-          <div class="itemLotteryBoxItem">
-            <div class="itemLotteryBoxItemBox">
-              <div class="numberBox green">22</div>
-
-              <div class="xiaoBox">猴/水</div>
-            </div>
-          </div>
-
-          <div class="itemLotteryBoxItem">
-            <div class="itemLotteryBoxItemBox">
-              <div class="numberBox blue">31</div>
-
-              <div class="xiaoBox">猪/火</div>
-            </div>
-          </div>
-
-          <div class="itemLotteryBoxItem">
-            <div class="itemLotteryBoxItemBox">
-              <div class="numberBox red">07</div>
-
-              <div class="xiaoBox">猪/木</div>
-            </div>
-          </div>
-
-          <div class="itemLotteryBoxItem">
-            <div class="itemLotteryBoxItemBox">
-              <div class="numberBox red">13</div>
-
-              <div class="xiaoBox">蛇/水</div>
-            </div>
-          </div>
-
-          <div class="itemLotteryBoxItem">
-            <div class="itemLotteryBoxItemBox">
-              <div class="numberBox red">18</div>
-
-              <div class="xiaoBox">鼠/火</div>
-            </div>
-          </div>
-
-          <div class="itemLotteryBoxItem itemLotteryBoxItemJoin"><div>+</div></div>
-          <div class="itemLotteryBoxItem">
-            <div class="itemLotteryBoxItemBox">
-              <div class="numberBox green">49</div>
-
-              <div class="xiaoBox">蛇/土</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-    <div class="flex border-b-1 border-b-indigo-500" v-for="data in selectStore1.items">
+    <div class="flex border-b-1 border-b-indigo-500" v-for="data in selectStore.items">
       <div class="openInfo leading-[20px] w-1/5 text-center">
         <div class="text-zinc-400 text-[14px]">{{ data.period_now_year }}-{{ data.period_now_month }}-{{ data.period_now_day }}</div>
         <div class="font-semibold text-[16px] leading-8">{{ padZero(data.period_now) }}期</div>

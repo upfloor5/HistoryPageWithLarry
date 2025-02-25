@@ -1,6 +1,6 @@
 <script lang="ts"></script>
 
-<template >
+<template>
   <!--走勢圖 -->
   <div></div>
 </template>

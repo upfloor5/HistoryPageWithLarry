@@ -3,7 +3,6 @@ import { computed } from 'vue';
 import { ref } from 'vue';
 import axios from 'axios';
 import { useSelectStore } from '../store/selectStore';
-import { useSelectStore1 } from '../store/selectStore1';
 
 const options = ref({
   type: [
@@ -30,7 +29,6 @@ const yearDefaultValue = ref<string>('2025');
 const periodDefaultValue = ref<string>('最新50期');
 
 const selectStore = useSelectStore();
-const selectStore1 = useSelectStore1();
 
 // 定義 props
 const props = defineProps({
@@ -41,13 +39,13 @@ const props = defineProps({
 
 <template>
   <el-select v-model="typeDefaultValue" class="select-width" :fallback-placements="['bottom-start']">
-    <el-option v-for="item in options.type" :key="item" :label="item.label" :value="item.value" @click="selectStore1.getTypeAPIData(item.value)" />
+    <el-option v-for="item in options.type" :key="item" :label="item.label" :value="item.value" @click="selectStore.getTypeAPIData(item.value)" />
   </el-select>
   <el-select v-model="yearDefaultValue" class="select-width" :fallback-placements="['bottom-start']">
-    <el-option v-for="item in options.year" :key="item" :label="item.label" :value="item.value" @click="selectStore1.getYearAPIData(item.value)" />
+    <el-option v-for="item in options.year" :key="item" :label="item.label" :value="item.value" @click="selectStore.getYearAPIData(item.value)" />
   </el-select>
   <el-select v-model="periodDefaultValue" class="select-width" :fallback-placements="['bottom-start']">
-    <el-option v-for="item in options.period" :key="item" :label="item.label" :value="item.value" @click="selectStore1.getPeriodAPIData(item.value)" />
+    <el-option v-for="item in options.period" :key="item" :label="item.label" :value="item.value" @click="selectStore.getPeriodAPIData(item.value)" />
   </el-select>
 </template>
 

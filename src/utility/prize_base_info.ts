@@ -1,5 +1,5 @@
 // 輸入任意值，如果是數字或是數字字串，則個位數補零。
-export const padZero = (input) => (isNaN(input) ? null : String(input).padStart(3, '0'));
+export const padZero = (input:number) => (isNaN(input) ? null : String(input).padStart(3, '0'));
 export function toData(str: string, time: number) {
   let numStr = time.toString();
   if (numStr.length < 7) return {};
@@ -12,3 +12,8 @@ export function toData(str: string, time: number) {
   }
   return result;
 }
+
+export default {
+  padZero,
+  toData
+};

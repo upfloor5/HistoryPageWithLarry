@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { ref,onMounted } from 'vue';
-import Select from './Select.vue';
-import HistoryList from './HistoryList.vue';
-import { useSelectStore } from '../store/selectStore';
-
+import { ref, onMounted } from 'vue';
+import Select from '@/components/Select.vue';
+import HistoryList from '@/components/HistoryList.vue';
 
 // ｃａｌｌ 生肖屬性ＡＰＩ ，存到persist
-onMounted(() => {
- 
-});
+onMounted(() => {});
 
 </script>
 
@@ -16,7 +12,7 @@ onMounted(() => {
   <div class="max-w-[720px]">
     <div class="my-0 mx-auto">
       <div class="flex justify-between h-auto py-5 text-white" style="background-color: #4b5cc4">
-        <el-icon :size="30"><ArrowLeft /></el-icon>
+        <el-icon :size="30" @click="setStore()"><ArrowLeft /></el-icon>
         <span class="text-xl">历史记录</span>
         <el-icon class="" :size="35"><HomeFilled /></el-icon>
       </div>
@@ -49,7 +45,7 @@ onMounted(() => {
     </div>
     <div class="flex w-full">
       <Select />
-    </div> 
+    </div>
     <HistoryList />
   </div>
 </template>

@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { ref } from 'vue';
-import { toData } from '../uility/prize_base_info';
-
+import { toData } from '../utility/prize_base_info';
 
 interface DataValue {
   id: string;
@@ -27,18 +26,19 @@ interface DataValue {
   period_now: string;
 }
 
-//Option Store 寫法
-export const useSelectStore = defineStore('select', {
-  state: () => ({
-    items: ref<Array<any>>([]), // 儲存 API 獲取的選項資料
-    type: ref<string>('1'),
-    year: ref<string>('2025'),
-    period: ref<string>('50')
-  }),
-  actions: {
-    async getHistoryAPIData() {
+//Setup Store 寫法
+
+export const useSelectStore = defineStore(
+  'select',
+  () => {
+    const items = ref<Array<any>>([]); // 儲存 API 獲取的選項資料
+    const type = ref<string>('1');
+    const year = ref<string>('2025');
+    const period = ref<string>('50');
+
+    const getHistoryAPIData = async () => {
       try {
-        const response = await axios.get(`https://api.cdn8649.cc/api/v01/lh/index.json?p=${this.year}${this.type}`);
+        const response = await axios.get(`https://api.cdn8649.cc/api/v01/lh/index.json?p=${year.value}${type.value}`);
         const data = await response.data; // 更新 items
         const reMapData = JSON.parse(toData(data.checkstr, data.timestamp))
           .map((da: DataValue) => ({
@@ -64,24 +64,29 @@ export const useSelectStore = defineStore('select', {
             period_now: da.period_now
           }))
           .reverse()
-          .slice(0, this.period);
-        this.items = reMapData;
-        console.log(this.items);
+          .slice(0, period.value);
+        items.value = reMapData;
+        console.log(items.value);
       } catch (error) {
         console.error('API 請求失敗:', error);
       }
-    },
-    async getYearAPIData(item: string) {
-      this.year = item;
-      await this.getHistoryAPIData();
-    },
-    async getPeriodAPIData(item: string) {
-      this.period = item;
-      await this.getHistoryAPIData();
-    },
-    async getTypeAPIData(item: string) {
-      this.type = item;
-      await this.getHistoryAPIData();
-    }
+    };
+    const getYearAPIData = async (item: string) => {
+      year.value = item;
+      await getHistoryAPIData();
+    };
+    const getPeriodAPIData = async (item: string) => {
+      period.value = item;
+      await getHistoryAPIData();
+    };
+    const getTypeAPIData = async (item: string) => {
+      type.value = item;
+      await getHistoryAPIData();
+    };
+
+    return { getHistoryAPIData, getYearAPIData, getPeriodAPIData, getTypeAPIData, items, type, year, period };
+  },
+  {
+    persist: true
   }
-});
+);

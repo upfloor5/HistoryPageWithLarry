@@ -3,6 +3,11 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { toData } from '../utility/prize_base_info';
 
+interface SelectOption {
+  label: string;
+  value: string;
+}
+
 interface DataValue {
   id: string;
   num_1: number;
@@ -32,9 +37,29 @@ export const useSelectStore = defineStore(
   'select',
   () => {
     const items = ref<Array<any>>([]); // 儲存 API 獲取的選項資料
-    const type = ref<string>('1');
+    const type = ref<string>('1'); // 預設值
     const year = ref<string>('2025');
     const period = ref<string>('50');
+
+    const selectOptions = ref({
+      type: [
+        { label: '澳門六合彩', value: '1' },
+        { label: '澳門六十彩', value: '3' },
+        { label: '香港六合彩', value: '2' },
+        { label: '香港六合彩', value: '4' }
+      ] as SelectOption[],
+      year: [
+        { label: '2025', value: '2025' },
+        { label: '2024', value: '2024' }
+      ] as SelectOption[],
+      period: [
+        { label: '最新50期', value: '50' },
+        { label: '最新100期', value: '100' },
+        { label: '最新150期', value: '150' },
+        { label: '最新200期', value: '200' },
+        { label: '全年', value: '366' }
+      ] as SelectOption[]
+    });
 
     const getHistoryAPIData = async () => {
       try {
@@ -66,7 +91,6 @@ export const useSelectStore = defineStore(
           .reverse()
           .slice(0, period.value);
         items.value = reMapData;
-        console.log(items.value);
       } catch (error) {
         console.error('API 請求失敗:', error);
       }
@@ -84,7 +108,7 @@ export const useSelectStore = defineStore(
       await getHistoryAPIData();
     };
 
-    return { getHistoryAPIData, getYearAPIData, getPeriodAPIData, getTypeAPIData, items, type, year, period };
+    return { items, type, year, period, selectOptions, getHistoryAPIData, getYearAPIData, getPeriodAPIData, getTypeAPIData };
   },
   {
     persist: true

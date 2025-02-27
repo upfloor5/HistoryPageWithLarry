@@ -1,8 +1,8 @@
 <script lang="ts" setup></script>
 
 <template>
-  <!--開獎統計 -->
-  <div>HitStatistics</div>
+  <!--遺漏統計 -->
+  <div>Omission</div>
 </template>
 
 <style scoped></style>

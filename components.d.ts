@@ -8,6 +8,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AttributeButton: typeof import('./src/components/AttributeButton.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElFooter: typeof import('element-plus/es')['ElFooter']
@@ -15,6 +16,7 @@ declare module 'vue' {
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElSelec: typeof import('element-plus/es')['ElSelec']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
@@ -24,6 +26,7 @@ declare module 'vue' {
     History: typeof import('./src/components/History.vue')['default']
     HistoryList: typeof import('./src/components/HistoryList.vue')['default']
     HitStatistics: typeof import('./src/components/HitStatistics.vue')['default']
+    Omission: typeof import('./src/components/Omission.vue')['default']
     Select: typeof import('./src/components/Select.vue')['default']
     TrendChart: typeof import('./src/components/TrendChart.vue')['default']
   }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSelectStore } from '@/store/selectStore';
+import { useAttributeStore } from '@/store/attributeStore';
 import { padZero } from '@/utility/prize_base_info';
 import { onMounted, watch } from 'vue';
 interface ColorMap {

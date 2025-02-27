@@ -7,8 +7,11 @@ interface SelectOption {
   label: string;
   value: string;
 }
+export interface attrNum {
+  [key: number]: string;
+}
 
-interface DataValue {
+export interface DataValue {
   id: string;
   num_1: number;
   num_2: number;
@@ -17,26 +20,28 @@ interface DataValue {
   num_5: number;
   num_6: number;
   num_7: number;
-  number_attr_1: number;
-  number_attr_2: number;
-  number_attr_3: number;
-  number_attr_4: number;
-  number_attr_5: number;
-  number_attr_6: number;
-  number_attr_7: number;
+  number_attr_1: attrNum;
+  number_attr_2: attrNum;
+  number_attr_3: attrNum;
+  number_attr_4: attrNum;
+  number_attr_5: attrNum;
+  number_attr_6: attrNum;
+  number_attr_7: attrNum;
   period_now_year: string;
   period_now_month: string;
   period_now_day: string;
   period_now_hour: string;
-  period_now: string;
+  period_now: number;
 }
+// 今年年份
+const nowYear = new Date().getFullYear();
 
 //Setup Store 寫法
 
 export const useSelectStore = defineStore(
   'select',
   () => {
-    const items = ref<Array<any>>([]); // 儲存 API 獲取的選項資料
+    const items = ref<Array<DataValue>>([]); // 儲存 API 獲取的選項資料
     const type = ref<string>('1'); // 預設值
     const year = ref<string>('2025');
     const period = ref<string>('50');
@@ -68,13 +73,13 @@ export const useSelectStore = defineStore(
         const reMapData = JSON.parse(toData(data.checkstr, data.timestamp))
           .map((da: DataValue) => ({
             id: da.id,
-            num_1: da.num_1,
-            num_2: da.num_2,
-            num_3: da.num_3,
-            num_4: da.num_4,
-            num_5: da.num_5,
-            num_6: da.num_6,
-            num_7: da.num_7,
+            num_1: String(da.num_1).padStart(2, '0'),
+            num_2: String(da.num_2).padStart(2, '0'),
+            num_3: String(da.num_3).padStart(2, '0'),
+            num_4: String(da.num_4).padStart(2, '0'),
+            num_5: String(da.num_5).padStart(2, '0'),
+            num_6: String(da.num_6).padStart(2, '0'),
+            num_7: String(da.num_7).padStart(2, '0'),
             number_attr_1: da.number_attr_1,
             number_attr_2: da.number_attr_2,
             number_attr_3: da.number_attr_3,

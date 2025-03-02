@@ -7,7 +7,6 @@ const store = useSelectStore();
 const attributeStore = useAttributeStore();
 // 使用 storeToRefs 來保持響應性
 const { type, year, period, selectOptions } = storeToRefs(store);
-const {getStoreData_49,getStoreData_60} = attributeStore
 
 const { getTypeAPIData, getYearAPIData, getPeriodAPIData } = store;
 </script>

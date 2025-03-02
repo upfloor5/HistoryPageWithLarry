@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { ref, toRaw } from 'vue';
-import { toData, padZero } from '../utility/prize_base_info';
-import { useSelectStore } from './selectStore';
-import type { DataValue } from './selectStore';
+import { ref } from 'vue';
+import { toData } from '../utility/prize_base_info';
+import type { DataValue,useSelectStore } from '../store/selectStore';
 
 const transformData = (resourceData) => {
   const targetData = {};
@@ -54,6 +53,22 @@ interface attrList {
   name: string;
   content1: string[];
 }
+interface formatNumList {
+  num: string;
+  period: number;
+  year: number;
+  month: number;
+  day: number;
+}
+const numSelectList = [
+  { label: "特码", value: 7 },
+  { label: "平一", value: 1 },
+  { label: "平二", value: 2 },
+  { label: "平三", value: 3 },
+  { label: "平四", value: 4 },
+  { label: "平五", value: 5 },
+  { label: "平六", value: 6 },
+];
 
 export const useAttributeStore = defineStore(
   'attributes',
@@ -67,9 +82,11 @@ export const useAttributeStore = defineStore(
     const animalList60 = ref<attrList[]>([]);
     const wuxingList49 = ref<attrList[]>([]);
     const boseList49 = ref<attrList[]>([]);
-    const filteredData = ref<string[]>([]); //過濾後屬性資料 ex:點選五行 回傳  ['金','火',...]
-    const activeListTypes = ref<number>(1);
-    const numDataList = ref<string[]>([]); //過濾下拉選單選擇平碼或特碼七種開獎號碼 ex:點選平碼 回傳所有平碼資料
+    const filteredData = ref<formatNumList[]>([]); //過濾後屬性資料 ex:點選五行 回傳  ['金','火',...]
+    let activeListTypes = ref<number>(7); //預設給特碼
+    const selectType  = ref<string>('特码')
+    const numDataList = ref<formatNumList[]>([]); //過濾下拉選單選擇平碼或特碼七種開獎號碼 ex:點選平碼 回傳所有平碼資料
+   
 
     const getStoredData = (numType: number, inputYear: number) => {
       const sortData = attrData.value[`${inputYear}${numType}`];
@@ -99,15 +116,24 @@ export const useAttributeStore = defineStore(
     const getStoreData_60 = (year: number) => {
       apiData60.value = getStoredData(60, year);
     };
-    //取得所有期數號碼
+    //取得所有期數平或特碼資料 arr:年份彩種取的資料陣列 ,inputNum:平碼或特碼對應數字 ex:特碼:7 ,平一:1 ...
     const getAllPeriodNumber = (arr: DataValue[], inputNum: number) => {
-      activeListTypes.value = inputNum;
-      const formatData = Object.values(arr);
+      console.log('選取號碼類型:'+ inputNum)
+      console.log('arr:', arr)
+      selectType.value  = inputNum == 7 ? '特码' : `平${inputNum}`
+      const formatData = Object.values(arr);  
       numDataList.value = formatData.map((item) => {
         const key = `num_${inputNum}`;
-        return item[key];
+        return {
+        num:  item[key],
+        period: item.period_now,
+        year: item.period_now_year,
+        month: item.period_now_month,
+        day: item.period_now_day,
+        }          
       });
-      console.log('numDataList.value',numDataList.value);
+      console.log('numDataList:', numDataList.value)
+      filteredData.value = numDataList.value;
     };
 
     //生肖對應資料陣列
@@ -138,17 +164,18 @@ export const useAttributeStore = defineStore(
       }
     };
 
-    //取得所有期數生肖 arr:年份彩種取的資料陣列 ,inputNum:平碼或特碼對應數字 ex:特碼:7 ,平一:1 ...
-    const getAllAnimalNumber = (arr: DataValue[], inputNum: number) => {
-      activeListTypes.value = inputNum;
-      const formatDataData = Object.values(arr);
-      const zodiacArray = formatDataData.map((item) => {
-        const key = `num_${inputNum}`;
-        return item[key];
-      });
-      filteredData.value = zodiacArray.map((item) => {
-        const data = getAnimalByNumber(item);
-        return data;
+    const getAllAnimalNumber = (arr: any[], inputNum: number) => {
+      activeListTypes.value = inputNum;     
+      const formatDataData = Object.values(arr);  
+      filteredData.value = formatDataData.map((item) => {     
+        const data = getAnimalByNumber(item.num);       
+        return {
+          num: data,
+          period: item.period_now,
+          year: item.period_now_year,
+          month: item.period_now_month,
+          day: item.period_now_day,
+        };
       });
     };
 
@@ -181,8 +208,8 @@ export const useAttributeStore = defineStore(
 
     //取得所有期數五行
     const getAllWuxingPeriodNumber = (arr: DataValue[], inputNum: number) => {
-      activeListTypes.value = inputNum;
-      const formatDataData = Object.values(arr);
+      activeListTypes.value = inputNum;      
+      const formatDataData = Object.values(arr);    
       const zodiacArray = formatDataData.map((item) => {
         const key = `num_${inputNum}`;
         return item[key];
@@ -272,7 +299,9 @@ export const useAttributeStore = defineStore(
       getAllPeriodNumber,
       filteredData,
       activeListTypes,
-      numDataList
+      numDataList,
+      selectType,
+      numSelectList
     };
   },
   {

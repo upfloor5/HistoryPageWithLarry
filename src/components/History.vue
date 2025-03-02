@@ -6,7 +6,6 @@ import TrendChart from '@/components/TrendChart.vue';
 import HitStatistics from '@/components/HitStatistics.vue';
 import Omission from '@/components/Omission.vue';
 import { useAttributeStore } from '@/store/attributeStore';
-import { useGlobalStore } from '@/store/globalStore';
 import { useSelectStore } from '@/store/selectStore';
 
 const attributeStore = useAttributeStore();
@@ -28,7 +27,6 @@ onMounted(() => {
   attributeStore.animalToNumFilter49();
   attributeStore.getAnimalList49();
   attributeStore.getWuxingList49();
-  attributeStore.getAllWuxingPeriodNumber(selectStore.items, 1), 
   attributeStore.getBoseList49();
 });
 </script>
